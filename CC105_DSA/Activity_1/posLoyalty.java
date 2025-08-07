@@ -2,6 +2,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 
+// Class that stores loyalty account information
 class loyaltyAccounts{
     int accountNumber = 0;
     int loyaltyPoints = 0;
@@ -12,15 +13,18 @@ class loyaltyAccounts{
         this.loyaltyPoints = cur_p;
     }
 
+    // Getter method for loyaltyPoints
     public int getPoints() {
         return loyaltyPoints;
     }
 
+    // Getter method for accountNumber
     public int getCardID() {
         return accountNumber;
     }
 }
 
+// Main Class
 public class posLoyalty {
     public static void main( String[] args){
 
@@ -36,7 +40,7 @@ public class posLoyalty {
         int cardID = rndg.nextInt(9999);
         int currentPnts = rndg.nextInt(9999);
         loyaltyAccounts acc = new loyaltyAccounts(cardID, currentPnts);
-        System.out.println("card id: " + acc.getCardID() + "\n points: " + acc.getPoints());
+        System.out.println("\n\n  Card ID: " + acc.getCardID() + "\n  Loyalty Points: " + acc.getPoints() + "\n");
 
         // Generates a random item checkout list
         int prod_cont = rndg.nextInt(productName.length);
@@ -55,11 +59,12 @@ public class posLoyalty {
             prods_total_price.addElement(productPrices[num_gen] * p_amount);
         }
 
-        //Sums up all the prices of the items generated
+        // Sums up all the prices of the items generated
         for (double price : prods_total_price) {
             totalPrice += price;
         }
 
+        // Unused?
         // System.out.println("\nProds selected list\n");
         // for(String p : prods_selected) {
         //     System.out.println(p);
@@ -72,7 +77,7 @@ public class posLoyalty {
         for (String product : prods_selected) {
             String tabCorrection[] = {"", "\t", "\t"};
 
-            //Applies indentation based on the item name length to properly align the UI.
+            // Applies indentation based on the item name length to properly align the UI.
             if(product.length() < 8){
                 tabCorrection[0] = "\t\t\t";
             } else if(product.length() >= 8 && product.length() < 15){
@@ -102,59 +107,45 @@ public class posLoyalty {
             i+=1;
         }
 
-        System.out.println("\n[]===============================[ Subtotal Price ]===============================[]");
-        System.out.println("  Subtotal Price:\n    [ Php " + String.format("%.2f", totalPrice) + " ]\n");
+        // Prints out the total price of items in checkout.
+        System.out.println("\n  Total Price:\n    [ Php " + String.format("%.2f", totalPrice) + " ]\n");
 
+        // Prompts the user to either enter loyalty card ID.
         Scanner card_input = new Scanner(System.in);
-        System.out.print("Enter the card ID here (Type N|n if no card): ");
-          String res = card_input.nextLine();
+        System.out.println("[]==============================[ Loyalty  Rewards ]==============================[]");
+        System.out.print("  Loyalty Rewards System:\n    Enter the card ID here (Type N/n if no card): ");
+        String res = card_input.nextLine();
 
-          if (res.equalsIgnoreCase("N")) {
-              System.out.println("Printed Receipt");
-          } else {
-              try {
-                  int intRes = Integer.parseInt(res);
+        // Outputs based on user input.
+        if (res.equalsIgnoreCase("N")) {
 
-                  if (intRes == acc.getCardID()) {
-                      System.out.println("\n[]=====================[ Loyalty  Rewards ]=====================[]");
+            // If user inputs N or n.
+            System.out.println("\n  Receipt printed. Thank you for shopping with us!\n\n[]================================================================================[]");
+        } else {
 
-                      int totalPoints = 0;
-                      for (int j = 0; j < productName.length; j++) {
-                          totalPoints += rndg.nextInt(5) + 1;
-                      }
+            // If user inputs something else. If card ID input is correct, it will proceed to add points to the account.
+            // if user inputs incorrect card ID or invalid inputs, no points will be added.
+            try {
+                int intRes = Integer.parseInt(res);
 
-                      System.out.println("\tCurrent Points: " + acc.getPoints());
-                      System.out.println("\tPoints to receive: " + totalPoints);
-                      System.out.println("\tTotal Points: " + (totalPoints + acc.getPoints()));
+                if (intRes == acc.getCardID()) {
+                    int totalPoints = 0;
+                    for (int j = 0; j < productName.length; j++) {
+                        totalPoints += rndg.nextInt(5) + 1;
+                    }
 
-                      System.out.println("[]=====================[ Loyalty  Rewards ]=====================[]\n");
+                    System.out.println("\n  Current Points: " + acc.getPoints());
+                    System.out.println("  Points to receive: " + totalPoints);
+                    System.out.println("  Total Points: " + (totalPoints + acc.getPoints()));
+                    System.out.println("\n  Receipt printed. Thank you for shopping with us!\n\n[]================================================================================[]");
 
-                  } else {
-                      System.out.println("Card ID not found:" + intRes);
-                  }
-              } catch (NumberFormatException e) {
-                  System.out.println("Invalid input. Please enter a number or N/n");
-              }
-          }
-
-//        int res = card_input.nextInt();
-//
-//        if (res == acc.getCardID()) {
-//            System.out.println("\n[]=====================[ Loyalty  Rewards ]=====================[]");
-//
-//            int totalPoints = 0;
-//            for (int j = 0; j < productName.length; j++) {
-//                totalPoints += rndg.nextInt(5) + 1;
-//            }
-//
-//            System.out.println("\tCurrent Points: " + acc.getPoints());
-//            System.out.println("\tPoints to receive: " + totalPoints);
-//            System.out.println("\tTotal Points: " + (totalPoints + acc.getPoints()));
-//
-//            System.out.println("[]=====================[ Loyalty  Rewards ]=====================[]\n");
-//        } else {
-//            System.out.println("No card: " + res);
-//        }
+                } else {
+                    System.out.println("\n  Card ID not found:" + intRes);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("\n  Invalid input. Please enter a number or N/n");
+            }
+        }
 
     }
 }
