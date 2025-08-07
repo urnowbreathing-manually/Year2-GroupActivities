@@ -95,24 +95,54 @@ public class posLoyalty {
 
         Scanner card_input = new Scanner(System.in);
         System.out.print("Enter the card ID here (Type N|n if no card): ");
-        int res = card_input.nextInt();
+          String res = card_input.nextLine();
 
-        if (res == acc.getCardID()) {
-            System.out.println("\n[]=====================[ Loyalty  Rewards ]=====================[]");
+          if (res.equalsIgnoreCase("N")) {
+              System.out.println("Printed Receipt");
+          } else {
+              try {
+                  int intRes = Integer.parseInt(res);
 
-            int totalPoints = 0;
-            for (int j = 0; j < productName.length; j++) {
-                totalPoints += rndg.nextInt(5) + 1;
-            }
+                  if (intRes == acc.getCardID()) {
+                      System.out.println("\n[]=====================[ Loyalty  Rewards ]=====================[]");
 
-            System.out.println("\tCurrent Points: " + acc.getPoints());
-            System.out.println("\tPoints to receive: " + totalPoints);
-            System.out.println("\tTotal Points: " + (totalPoints + acc.getPoints()));
+                      int totalPoints = 0;
+                      for (int j = 0; j < productName.length; j++) {
+                          totalPoints += rndg.nextInt(5) + 1;
+                      }
 
-            System.out.println("[]=====================[ Loyalty  Rewards ]=====================[]\n");
-        } else {
-            System.out.println("No card: " + res);
-        }
+                      System.out.println("\tCurrent Points: " + acc.getPoints());
+                      System.out.println("\tPoints to receive: " + totalPoints);
+                      System.out.println("\tTotal Points: " + (totalPoints + acc.getPoints()));
+
+                      System.out.println("[]=====================[ Loyalty  Rewards ]=====================[]\n");
+
+                  } else {
+                      System.out.println("Card ID not found:" + intRes);
+                  }
+              } catch (NumberFormatException e) {
+                  System.out.println("Invalid input. Please enter a number or N/n");
+              }
+          }
+
+//        int res = card_input.nextInt();
+//
+//        if (res == acc.getCardID()) {
+//            System.out.println("\n[]=====================[ Loyalty  Rewards ]=====================[]");
+//
+//            int totalPoints = 0;
+//            for (int j = 0; j < productName.length; j++) {
+//                totalPoints += rndg.nextInt(5) + 1;
+//            }
+//
+//            System.out.println("\tCurrent Points: " + acc.getPoints());
+//            System.out.println("\tPoints to receive: " + totalPoints);
+//            System.out.println("\tTotal Points: " + (totalPoints + acc.getPoints()));
+//
+//            System.out.println("[]=====================[ Loyalty  Rewards ]=====================[]\n");
+//        } else {
+//            System.out.println("No card: " + res);
+//        }
 
     }
 }
