@@ -1,5 +1,5 @@
-import java.util.Scanner;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Vector;
 
 class loyaltyAccounts{
@@ -23,20 +23,22 @@ class loyaltyAccounts{
 
 public class posLoyalty {
     public static void main( String[] args){
+
+        // Variable Declarations for product name, amount, price, associated loyalty points, and total price
         String[] productName = {"Choco Biscuits", "Organic Shampoo", "Instant Noodles", "Facial Cleanser", "Coffee Grounds", "Dishwashing Liquid", "Hand Sanitizer", "Tomato Sauce", "Dog Food (Beef)", "Floor Cleaner", "Laundry Detergent", "Sardines", "Air Freshener Spray", "Antibacterial Wipes", "Baby Powder", "Liquid Hand Soap", "Chocolate Bar", "Milk", "Cooking Oil", "Vitamin C Tablets"};
         int[] productAmount = {15, 1, 10, 5, 15, 1, 1, 1, 1, 1, 1, 10, 1, 1, 1, 1, 3, 1, 1, 1};
         double[] productPrices = {7.00, 150.25, 25.00, 90.50, 15.00, 189.75, 45.00, 25.00, 270.25, 283.50, 190.00, 35.25, 150.00, 48.75, 30.00, 63.50, 15.00, 120.50, 175.00, 90.75};
         int[] productPoints = {1, 3, 1, 2, 3, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1};
         double totalPrice = 0.00;
         
-        // generate random customer
+        // Generates a loyaly account with randomized info
         Random rndg = new Random();
         int cardID = rndg.nextInt(9999);
         int currentPnts = rndg.nextInt(9999);
         loyaltyAccounts acc = new loyaltyAccounts(cardID, currentPnts);
         System.out.println("card id: " + acc.getCardID() + "\n points: " + acc.getPoints());
 
-        // generate random items
+        // Generates a random item checkout list
         int prod_cont = rndg.nextInt(productName.length);
         Vector<String> prods_selected = new Vector<>();
         Vector<Double> prods_price = new Vector<>();
@@ -53,6 +55,7 @@ public class posLoyalty {
             prods_total_price.addElement(productPrices[num_gen] * p_amount);
         }
 
+        //Sums up all the prices of the items generated
         for (double price : prods_total_price) {
             totalPrice += price;
         }
@@ -62,22 +65,23 @@ public class posLoyalty {
         //     System.out.println(p);
         // }
 
-        System.out.println("[]==================[ POS Checkout Receipt ]==================[]\n  Item/s for Checkout:");
+        System.out.println("[]============================[ POS Checkout Receipt ]============================[]\n  Item/s for Checkout:");
 
+        // For loop that prints the list of items bought, amount selected, price per unit, and total price of item units.
         int i = 0;
         for (String product : prods_selected) {
-            String tabCorrection[] = {"", ""};
+            String tabCorrection[] = {"", "\t", "\t"};
+
+            //Applies indentation based on the item name length to properly align the UI.
             if(product.length() < 8){
                 tabCorrection[0] = "\t\t\t";
-                tabCorrection[1] = "\t";
-            } else if(product.length() >= 8 && product.length() < 16){
+            } else if(product.length() >= 8 && product.length() < 15){
                 tabCorrection[0] = "\t\t";
-                tabCorrection[1] = "\t";
             } else{
                 tabCorrection[0] = "\t";
-                tabCorrection[1] = "\t";
             }
 
+            // Checks for item amount, then applies the appropriate term.
             String unitPluralCheck;
             if(productAmount[i] != 1){
                 unitPluralCheck = "units";
@@ -85,12 +89,20 @@ public class posLoyalty {
                 unitPluralCheck = "unit";
             }
 
+            // Indents the the first nine items to align it with the rest.
+            String lessThan10 = " ";
+            if(i < 9){
+                lessThan10 = "  ";
+            } else{
+                lessThan10 = " ";
+            }
 
-            System.out.println("    " + (i + 1) + ".) " + product + tabCorrection[0] +"|| x" + prods_amount.get(i) + " " + unitPluralCheck + tabCorrection[1] + "|| Php " + String.format("%.2f", prods_price.get(i)) + " || Php " + String.format("%.2f", prods_total_price.get(i)));
+            // The actual print function the builds the item list UI.
+            System.out.println("   " + lessThan10 + (i + 1) + ".) " + product + tabCorrection[0] +"|| x" + prods_amount.get(i) + " " + unitPluralCheck + tabCorrection[1] + "|| Php " + String.format("%.2f", prods_price.get(i)) + tabCorrection[2] + " || Php " + String.format("%.2f", prods_total_price.get(i)));
             i+=1;
         }
 
-        System.out.println("\n[]=====================[ Subtotal Price ]=====================[]");
+        System.out.println("\n[]===============================[ Subtotal Price ]===============================[]");
         System.out.println("  Subtotal Price:\n    [ Php " + String.format("%.2f", totalPrice) + " ]\n");
 
         Scanner card_input = new Scanner(System.in);
