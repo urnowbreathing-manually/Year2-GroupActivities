@@ -35,7 +35,7 @@ public class posLoyalty {
         int[] productPoints = {1, 3, 1, 2, 3, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1};
         double totalPrice = 0.00;
         
-        // Generates a loyaly account with randomized info
+        // Generates a loyalty account with randomized info.
         Random rndg = new Random();
         int cardID = rndg.nextInt(9999);
         int currentPnts = rndg.nextInt(9999);
@@ -43,20 +43,35 @@ public class posLoyalty {
         System.out.println("\n\n  Card ID: " + acc.getCardID() + "\n  Loyalty Points: " + acc.getPoints() + "\n");
 
         // Generates a random item checkout list
-        int prod_cont = rndg.nextInt(productName.length);
         Vector<String> prods_selected = new Vector<>();
         Vector<Double> prods_price = new Vector<>();
         Vector<Double> prods_total_price = new Vector<>();
         Vector<Integer> prods_amount = new Vector<>();
+        Vector<Integer> prods_points = new Vector<>();
 
-        for (int d = 0; d < prod_cont; d++) {
-            int num_gen = rndg.nextInt(productName.length);
-            int p_amount = rndg.nextInt(20);
 
-            prods_selected.addElement(productName[num_gen]);
-            prods_amount.addElement(p_amount);
-            prods_price.addElement(productPrices[num_gen]);
-            prods_total_price.addElement(productPrices[num_gen] * p_amount);
+        while (true) {
+            int prod_cont = rndg.nextInt(productName.length);
+            prod_cont = (prod_cont < 1) ? 5 : prod_cont;
+
+            for (int d = 0; d < prod_cont; d++) {
+                int num_gen = rndg.nextInt(productName.length);
+
+                int p_amount = rndg.nextInt(20);
+                p_amount = (p_amount < 1) ? 1 : p_amount;
+
+                prods_selected.addElement(productName[num_gen]);
+                prods_amount.addElement(p_amount);
+                prods_price.addElement(productPrices[num_gen]);
+                prods_total_price.addElement(productPrices[num_gen] * p_amount);
+                prods_points.addElement(productPoints[num_gen]);
+            }
+
+            if (prods_selected.isEmpty()) {
+                continue;
+            } else {
+                break;
+            }
         }
 
         // Sums up all the prices of the items generated
@@ -71,6 +86,9 @@ public class posLoyalty {
         // }
 
         System.out.println("[]============================[ POS Checkout Receipt ]============================[]\n  Item/s for Checkout:");
+        System.out.println("[]==============================[]==============[]===============[]===============[]");
+        System.out.println("          Product Name          ||   Quantity   ||Price per Unit || Item Subtotal   ");
+        System.out.println("[]==============================[]==============[]===============[]===============[]");
 
         // For loop that prints the list of items bought, amount selected, price per unit, and total price of item units.
         int i = 0;
@@ -107,7 +125,9 @@ public class posLoyalty {
             i+=1;
         }
 
+        
         // Prints out the total price of items in checkout.
+        System.out.println("[]==============================[]==============[]===============[]===============[]");
         System.out.println("\n  Total Price:\n    [ Php " + String.format("%.2f", totalPrice) + " ]\n");
 
         //run the code indefinitely unless it went to a valid if/else statement then it would break
@@ -135,8 +155,9 @@ public class posLoyalty {
                     // code will stop the loop on this valid condition
                     if (intRes == acc.getCardID()) {
                         int totalPoints = 0;
-                        for (int j = 0; j < productName.length; j++) {
-                            totalPoints += rndg.nextInt(5) + 1;
+
+                        for (int p : prods_points) {
+                            totalPoints += p;
                         }
 
                         System.out.println("\n  Current Points: " + acc.getPoints());
