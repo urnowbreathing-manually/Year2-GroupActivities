@@ -110,40 +110,46 @@ public class posLoyalty {
         // Prints out the total price of items in checkout.
         System.out.println("\n  Total Price:\n    [ Php " + String.format("%.2f", totalPrice) + " ]\n");
 
-        // Prompts the user to either enter loyalty card ID.
-        Scanner card_input = new Scanner(System.in);
-        System.out.println("[]==============================[ Loyalty  Rewards ]==============================[]");
-        System.out.print("  Loyalty Rewards System:\n    Enter the card ID here (Type N/n if no card): ");
-        String res = card_input.nextLine();
+        //run the code indefinitely unless it went to a valid if/else statement then it would break
+        while (true) {
+            // Prompts the user to either enter loyalty card ID.
+            Scanner card_input = new Scanner(System.in);
+            System.out.println("[]==============================[ Loyalty  Rewards ]==============================[]");
+            System.out.print("  Loyalty Rewards System:\n    Enter the card ID here (Type N/n if no card): ");
+            String res = card_input.nextLine();
 
-        // Outputs based on user input.
-        if (res.equalsIgnoreCase("N")) {
+            // Outputs based on user input.
+            // code will stop the loop on this valid condition
+            if (res.equalsIgnoreCase("N")) {
 
-            // If user inputs N or n.
-            System.out.println("\n  Receipt printed. Thank you for shopping with us!\n\n[]================================================================================[]");
-        } else {
+                // If user inputs N or n.
+                System.out.println("\n  Receipt printed. Thank you for shopping with us!\n\n[]================================================================================[]");
+                break;
+            } else {
 
-            // If user inputs something else. If card ID input is correct, it will proceed to add points to the account.
-            // if user inputs incorrect card ID or invalid inputs, no points will be added.
-            try {
-                int intRes = Integer.parseInt(res);
+                // If user inputs something else. If card ID input is correct, it will proceed to add points to the account.
+                // if user inputs incorrect card ID or invalid inputs, no points will be added.
+                try {
+                    int intRes = Integer.parseInt(res);
 
-                if (intRes == acc.getCardID()) {
-                    int totalPoints = 0;
-                    for (int j = 0; j < productName.length; j++) {
-                        totalPoints += rndg.nextInt(5) + 1;
+                    // code will stop the loop on this valid condition
+                    if (intRes == acc.getCardID()) {
+                        int totalPoints = 0;
+                        for (int j = 0; j < productName.length; j++) {
+                            totalPoints += rndg.nextInt(5) + 1;
+                        }
+
+                        System.out.println("\n  Current Points: " + acc.getPoints());
+                        System.out.println("  Points to receive: " + totalPoints);
+                        System.out.println("  Total Points: " + (totalPoints + acc.getPoints()));
+                        System.out.println("\n  Receipt printed. Thank you for shopping with us!\n\n[]================================================================================[]");
+                        break;
+                    } else {
+                        System.out.println("\n  Card ID not found:" + intRes);
                     }
-
-                    System.out.println("\n  Current Points: " + acc.getPoints());
-                    System.out.println("  Points to receive: " + totalPoints);
-                    System.out.println("  Total Points: " + (totalPoints + acc.getPoints()));
-                    System.out.println("\n  Receipt printed. Thank you for shopping with us!\n\n[]================================================================================[]");
-
-                } else {
-                    System.out.println("\n  Card ID not found:" + intRes);
+                } catch (NumberFormatException e) {
+                    System.out.println("\n  Invalid input. Please enter a number or N/n");
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("\n  Invalid input. Please enter a number or N/n");
             }
         }
 
